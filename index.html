@@ -1,0 +1,131 @@
+<html>
+<head>
+    <title> Hypothesis Testing </title>
+    <link rel="stylesheet" type="text/css" href="./css/app.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="./css/Tips.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="./css/w32.css" media="screen" />
+
+    <script src="./js/jquery-1.10.1.min.js"></script>
+    <script src="./js/hypo.js"></script>
+    <script src="./js/hypoApp.js"></script>
+    <script src="./js/StatisticsFunctions.js"></script>    
+</head>
+<body class="masterclass">
+
+<div class="mytitle" id="hypothesis" >
+	Hypothesis Testing:
+</div>
+<p class="mytooltip" mytitle="You can choose the type of population distribution by clicking the drop down menu. Select the mean and the variance by choosing the corresponding option in the list." >
+Sampling Parameter selection (Normally distributed):</br>
+<select name="varPara">
+	<option value =1>&mu; = 0, &sigma;&#178; = 1</option>
+	<option value =2>&mu; = 1, &sigma;&#178; = 2</option>
+	<option value =3>&mu; = 2, &sigma;&#178; = 3</option>
+</select>
+</p>
+<hr>
+<p  class="mytooltip" mytitle="You can draw samples from population by clicking <+1>, <+5> or <+10> in order to draw 1, 5 or 10 samples each time. You can also clear the samples by clicking the <Clear Samples> button." >
+Generate Samples:</br>
+<button class="w3-button w3-white w3-border w3-border-green w3-round-large" id="sample1">+1</button>
+<button class="w3-button w3-white w3-border w3-border-green w3-round-large" id="sample5">+5</button>
+<button class="w3-button w3-white w3-border w3-border-green w3-round-large" id="sample10">+10</button></br>
+
+Sample values: <button class="w3-button w3-white w3-border w3-border-green w3-round-large" id="resetSamples">Clear Samples</button>
+</p>
+<div style="width:350px" class="mytooltip" mytitle="The values of the samples are displayed in this area. You can also observe the number of samples, sample mean and sample s.d. by clicking the <Show statistics> button." >
+	<form>
+	    <textarea rows="6" cols="60" readonly id="sampleValuesTextarea" style="resize: none;"></textarea>
+	</form>
+Statistics: <button class="w3-button w3-white w3-border w3-border-green w3-round-large" id="showStat">Show statistics</button><button class="w3-button w3-white w3-border w3-border-green w3-round-large" id="hideStat">Hide statistics</button><br/>
+<table style="width:350px">
+	<col width="150px"/><col width="200px"/>
+<tr>
+	<td align="right"> Number of Samples: </td>
+	<td><span class="sampleStat" id="sampleCount"></span> </td>
+</tr>
+<tr>
+	<td align="right"> Sample Mean: </td>
+	<td><span class="sampleStat" id="sampleMean"></span> </td>
+</tr>
+<tr>
+	<td align="right"> Sample SD: </td>
+	<td><span class="sampleStat" id="sampleVar"></span>  </td>
+</tr>
+</table>
+</div>
+<p  class="mytooltip" mytitle="H<sub>0</sub> , H<sub>i</sub> and the significance value can be chosen by clicking the drop down menu. After selecting the test variance, click <Test> and the Z-statistics will be displayed." >
+Hypothesis test:</br>
+H<sub>0</sub>:
+<select name="H0Para">
+	<option value =0>&#956; = &#956;&#8320; = 0</option>
+	<option value =1>&#956; = &#956;&#8320; = 1</option>
+	<option value =2>&#956; = &#956;&#8320; = 2</option>
+</select>
+&nbsp;
+H<sub>1</sub>:
+<select name="H1Para">
+	<option value =0>&#956; &#8800; &#956;&#8320;</option>
+	<option value =1>&#956; &#62; &#956;&#8320;</option>
+	<option value =2>&#956; &#60; &#956;&#8320;</option>
+</select>
+&nbsp;
+Significance value:
+<select name="AlphaPara">
+	<option value =1>&#945; = 0.1</option>
+	<option value =2>&#945; = 0.05</option>
+	<option value =3>&#945; = 0.01</option>
+</select>
+</p>
+<div id="container">
+<img class='img' src="./image/normdistgraph.png" alt=""/ width = "310" height = "130">
+<canvas id="testCanvas" width = "310" height = "140" ></canvas>
+</div>
+</br>
+Acceptance boundaries are show in blue lines. 
+</br>
+<p  class="mytooltip" mytitle="By selecting the test variance and clicking <Test> to run, the Z-statistics and test type will be displayed. You can draw conclusion by observing whether the Z-statistics is inside the rejection area. You can check whether you draw a correction conclusion by comparing your answer with the test result." >
+Test Statistics (Assumption: Normal Distributed with unknown mean and known variance.):</br>
+Test Variance (population variance):<select name="VariancePara">
+	<option value =1> &sigma;&#178; = 1</option>
+	<option value =2> &sigma;&#178; = 2</option>
+	<option value =3> &sigma;&#178; = 3</option>
+</select>
+&nbsp;
+<button class="w3-button w3-white w3-border w3-border-green w3-round-large" id="Test">Test</button>
+<!--<button id="showTest">Show statistics</button>
+<button id="hideTest">Hide statistics</button>
+-->
+<br/>
+<table style="width:600px">
+	<col width="25%"/><col width="75%"/>
+<tr>
+	<td align="right"> Z-statistcs: </td>
+	<td><span class="sampleTest" id="z-stat"></span> </td>
+</tr>
+<tr>
+	<td align="right"> Test type: </td>
+	<td><span class="sampleTest" id="testTail"></span> </td>
+</tr>
+<tr>
+	<td align="right"> Test result: </td>
+	<td><span class="sampleTest" id="testResult"></span>  </td>
+</tr>
+<tr style="color:#ddd">
+	<td align="right"> </td>
+	<td><span id="b1"></span>  </td>
+</tr>
+<tr style="color:#ddd">
+	<td align="right"> </td>
+	<td><span id="b2"></span>  </td>
+</tr>
+</table></p>
+
+<!--
+Sample Statistics on graph: </br>
+
+<img src="./image/normdistgraph.png" class="graph" id="normdistgraph"> 
+-->
+
+</body>
+</html>
+
